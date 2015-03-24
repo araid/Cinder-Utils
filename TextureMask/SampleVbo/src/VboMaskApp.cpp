@@ -1,4 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/Rand.h"
 
@@ -7,7 +9,7 @@
 using namespace ci;
 using namespace ci::app;
 
-class VboMaskApp : public AppNative {
+class VboMaskApp : public App {
   public:
 	void setup();
 	void draw();
@@ -15,35 +17,35 @@ class VboMaskApp : public AppNative {
     void mouseDown( MouseEvent event );
 
     bool  bDebug;
-    Vec2f mMousePos;
+    vec2 mMousePos;
     Rectf mMaskRect;
     Rectf mImageRect;
     
-    gl::Texture mImageTexture;
-    gl::Texture mMaskTexture;
+    gl::TextureRef mImageTexture;
+    gl::TextureRef mMaskTexture;
     gl::VboMeshRef mMesh;
 };
 
 void VboMaskApp::setup()
 {
     bDebug = false;
-    mMousePos = Vec2f::zero();
+    mMousePos = vec2(0);
     
     // load differently sized image and mask
     gl::Texture::Format format;
     format.enableMipmapping();
-    mImageTexture = gl::Texture(loadImage(loadResource("image.jpg")), format);
-    mMaskTexture  = gl::Texture(loadImage(loadResource("mask.png")), format);
+    mImageTexture = gl::Texture::create(loadImage(loadResource("image.jpg")), format);
+    mMaskTexture  = gl::Texture::create(loadImage(loadResource("mask.png")), format);
     
     // create rectangles to define their size and position
-    mImageRect = Rectf(mImageTexture.getBounds()).getCenteredFit(Rectf(-100, -100, 100, 100), true);
-    mMaskRect = Rectf(mMaskTexture.getBounds()).getCenteredFit(mImageRect, true); // this will make the mask fit in the image
+    mImageRect = Rectf(mImageTexture->getBounds()).getCenteredFit(Rectf(-100, -100, 100, 100), true);
+    mMaskRect = Rectf(mMaskTexture->getBounds()).getCenteredFit(mImageRect, true); // this will make the mask fit in the image
 
     // create vbo with the right mesh coordinates so we dont have to calculate them every frame
     mMesh = MaskedTexture::createMaskedTextureMesh(mImageRect, mMaskRect);
     
     // load default shader or assign your own
-    MaskedTexture::loadShader();
+    MaskedTexture::loadShaders();
     
     gl::enableAlphaBlending();
 }
@@ -69,14 +71,14 @@ void VboMaskApp::draw()
     float t = getElapsedSeconds();
     
     for (int i=0; i<numImages; i++) {
-        float index = (float)i / (float)numImages;
-        float rad = 150 * (sin(t * 5 + index * M_PI * 2) * 0.4 + 1.25);
-        float rot = index * 360 + t * 30;
+        float index = (float)i / (float)(numImages - 1);
+        float rad = 150 * (sin(t * 5 + index * glm::two_pi<float>()) * 0.4 + 1.25);
+        float rot = index * glm::two_pi<float>() + t;
         
         gl::pushMatrices();
         gl::translate(mMousePos);
         gl::rotate(rot);
-        gl::translate(Vec2f(0, rad));
+        gl::translate(vec2(0, rad));
         
         // this is the important stuff, all the previous was just to get some nice movement
         MaskedTexture::drawMaskedTextureMesh(mImageTexture, mMaskTexture, mMesh);
@@ -92,5 +94,4 @@ void VboMaskApp::draw()
 }
 
 
-
-CINDER_APP_NATIVE( VboMaskApp, RendererGl )
+CINDER_APP( VboMaskApp, RendererGl )

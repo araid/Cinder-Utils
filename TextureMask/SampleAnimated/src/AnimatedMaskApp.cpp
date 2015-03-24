@@ -1,4 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 
 #include "MaskedTexture.h"
@@ -6,7 +8,7 @@
 using namespace ci;
 using namespace ci::app;
 
-class AnimatedMaskApp : public AppNative {
+class AnimatedMaskApp : public App {
   public:
 	void setup();
 	void draw();
@@ -14,26 +16,26 @@ class AnimatedMaskApp : public AppNative {
     void mouseDown( MouseEvent event );
 
     bool bDebug;
-    Vec2f mMousePos;
+    vec2 mMousePos;
     Rectf mMaskRect;
     Rectf mImageRect;
     
-    gl::Texture mImageTexture;
-    gl::Texture mMaskTexture;
+    gl::TextureRef mImageTexture;
+    gl::TextureRef mMaskTexture;
 };
 
 void AnimatedMaskApp::setup()
 {
     bDebug = true;
-    mMousePos = Vec2f::zero();
+    mMousePos = vec2(0);
     
     // load differently sized image and mask
-    mImageTexture = gl::Texture(loadImage(loadResource("image.jpg")));
-    mMaskTexture  = gl::Texture(loadImage(loadResource("mask.png")));
+    mImageTexture = gl::Texture::create(loadImage(loadResource("image.jpg")));
+    mMaskTexture  = gl::Texture::create(loadImage(loadResource("mask.png")));
     
     // create rectangles to define their size and position
-    mImageRect = Rectf(mImageTexture.getBounds()).getCenteredFit(getWindowBounds(), true);
-    mMaskRect = Rectf(mMaskTexture.getBounds()).getCenteredFit(mImageRect, true); // this will make the mask fit in the image
+    mImageRect = Rectf(mImageTexture->getBounds()).getCenteredFit(getWindowBounds(), true);
+    mMaskRect = Rectf(mMaskTexture->getBounds()).getCenteredFit(mImageRect, true); // this will make the mask fit in the image
     
     gl::enableAlphaBlending();
 }
@@ -66,10 +68,8 @@ void AnimatedMaskApp::draw()
         gl::drawStrokedRect(mImageRect);
     
         gl::color(1, 1, 0);
-        gl::drawStrokedRect(mMaskRect + mMousePos - getWindowCenter());
+        gl::drawStrokedRect(newMaskRect);
     }
 }
 
-
-
-CINDER_APP_NATIVE( AnimatedMaskApp, RendererGl )
+CINDER_APP( AnimatedMaskApp, RendererGl )
