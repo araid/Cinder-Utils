@@ -19,8 +19,8 @@ using namespace ci;
 class BaseMaterial {
 public:
     virtual void setup() = 0;
-    virtual void setupParams(params::InterfaceGlRef params) = 0;
     virtual void draw(gl::VboMeshRef mesh) = 0;
+    virtual void setupParams(params::InterfaceGlRef &params) {};
     
 protected:
     bool bLoaded = false;

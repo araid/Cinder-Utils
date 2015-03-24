@@ -9,7 +9,9 @@
 #include "cinder/ImageIo.h"
 #include "cinder/params/Params.h"
 
+#include "Wireframe.h"
 #include "SimpleShading.h"
+#include "Phong.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,10 +29,13 @@ class MaterialLibraryApp : public App {
 	void draw() override;
     void mouseDown( MouseEvent event ) override;
     void mouseDrag( MouseEvent event ) override;
+    void keyDown( KeyEvent event ) override;
     
     void setupParams();
     void loadGeometry();
     void loadMaterial();
+    
+    bool bDrawParams;
     
     int mPrimitiveSelected, mPrimitiveCurrent;
     int mMaterialSelected, mMaterialCurrent;
@@ -47,20 +52,23 @@ class MaterialLibraryApp : public App {
 
 void prepareSettings( App::Settings* settings )
 {
-    settings->setWindowSize(1280, 920);
-    settings->setHighDensityDisplayEnabled();
+    settings->setWindowSize(1024, 768);
 }
 
 void MaterialLibraryApp::setup()
 {
     // setup geometry
-    mSubdivisions = 20;
+    mSubdivisions = 30;
     mPrimitiveSelected = mPrimitiveCurrent = SPHERE;
     mMaterialSelected = mMaterialCurrent = SIMPLE;
     loadGeometry();
     
     // setup materials
-    mMaterials = { { SIMPLE, new SimpleShading() } };
+    mMaterials = {
+        { WIREFRAME, new Wireframe() },
+        { SIMPLE, new SimpleShading() },
+        { PHONG, new Phong() }
+    };
     loadMaterial();
     
     // setup camera
@@ -80,15 +88,17 @@ void MaterialLibraryApp::setup()
 
 void MaterialLibraryApp::setupParams()
 {
+    bDrawParams = true;
     vector<string> primitives = { "Sphere", "Cube", "Teapot" };
-    vector<string> materials  = { "Wireframe", "Shaded", "Phong" };
+    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong" };
     
-    mParams = ci::params::InterfaceGl::create( "Material Library", ci::ivec2(200, 200) );
+    mParams = ci::params::InterfaceGl::create( "Material Library", ci::ivec2(250, 100) );
+    mParams->setOptions( "", "valueswidth=120 refresh=0.1" );
     mParams->setPosition(ci::ivec2(20, 20));
     
     mParams->addParam( "Material", materials, (int*) &mMaterialSelected );
     mParams->addParam( "Primitive", primitives, (int*) &mPrimitiveSelected );
-    mParams->addParam( "Subdivisions", &mSubdivisions ).min(1).max(50).step(1)
+    mParams->addParam( "Subdivisions", &mSubdivisions ).min(1).max(100).step(1)
             .updateFn( [this] { loadGeometry(); } );
 }
 
@@ -118,6 +128,20 @@ void MaterialLibraryApp::mouseDrag( MouseEvent event )
     mMayaCam.mouseDrag( event.getPos(), event.isLeftDown(), event.isMiddleDown(), event.isRightDown() );
 }
 
+void MaterialLibraryApp::keyDown(KeyEvent event )
+{
+    switch (event.getCode()) {
+        case KeyEvent::KEY_p:
+            bDrawParams = !bDrawParams;
+            mParams->show(bDrawParams);
+            if(mMaterialParams) mMaterialParams->show(bDrawParams);
+            break;
+            
+        default:
+            break;
+    }
+}
+
 void MaterialLibraryApp::update()
 {
     if(mPrimitiveCurrent != mPrimitiveSelected) {
@@ -133,7 +157,7 @@ void MaterialLibraryApp::update()
 
 void MaterialLibraryApp::draw()
 {
-	gl::clear( Color( 0, 0, 0 ) );
+	gl::clear( Color( 0.2, 0.23, 0.25 ) );
     
     gl::ScopedMatrices cameraMat;
     gl::setMatrices(mMayaCam.getCamera());
@@ -141,6 +165,7 @@ void MaterialLibraryApp::draw()
     mMaterial->draw(mMesh);
     
     mParams->draw();
+    if (mMaterialParams) mMaterialParams->draw();
 }
 
-CINDER_APP( MaterialLibraryApp, RendererGl )
+CINDER_APP( MaterialLibraryApp, RendererGl, prepareSettings )
