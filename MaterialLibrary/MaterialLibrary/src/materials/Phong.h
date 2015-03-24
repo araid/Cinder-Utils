@@ -27,7 +27,7 @@ public:
         params.reset();
         params = ci::params::InterfaceGl::create( "Phong", ci::ivec2(250, 150) );
         params->setOptions( "", "valueswidth=120 refresh=0.1" );
-        params->setPosition(ci::ivec2(20, 155));
+        params->setPosition(ci::ivec2(20, 150));
         
         params->addParam( "Light Position", &mLightLoc );   // multiply by the camera matrix to make it rotate with it
         params->addParam( "Diffuse Color", &mDiffuseColor );

@@ -12,6 +12,7 @@
 #include "Wireframe.h"
 #include "SimpleShading.h"
 #include "Phong.h"
+#include "NormalPhong.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -22,7 +23,7 @@ void prepareSettings( App::Settings* settings );
 class MaterialLibraryApp : public App {
   public:
     enum PrimitiveDef  { SPHERE, CUBE, TEAPOT };
-    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG };
+    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG, NORMALPHONG };
 
 	void setup() override;
 	void update() override;
@@ -67,7 +68,8 @@ void MaterialLibraryApp::setup()
     mMaterials = {
         { WIREFRAME, new Wireframe() },
         { SIMPLE, new SimpleShading() },
-        { PHONG, new Phong() }
+        { PHONG, new Phong() },
+        { NORMALPHONG, new NormalPhong() }
     };
     loadMaterial();
     
@@ -90,7 +92,7 @@ void MaterialLibraryApp::setupParams()
 {
     bDrawParams = true;
     vector<string> primitives = { "Sphere", "Cube", "Teapot" };
-    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong" };
+    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong", "Normal mapping" };
     
     mParams = ci::params::InterfaceGl::create( "Material Library", ci::ivec2(250, 100) );
     mParams->setOptions( "", "valueswidth=120 refresh=0.1" );
