@@ -5,8 +5,6 @@ A small collection of Cinder examples and helpful classes that are not big enoug
 
 Meant to be used with the glNext branch of Cinder and only tested in MacOS.
 
-1. **TextureMask:** combine an image and mask of different sizes. 
-
 ####Downloading and using the samples with Cinder
 * Download the Cinder Framework, ideally from Git (http://libcinder.org/docs/welcome/GitSetup.html)
 * Clone this repo or download it as a zip next the Cinder folder, that ideally should be named ```cinder_glNext```;
