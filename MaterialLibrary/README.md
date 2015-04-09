@@ -14,3 +14,5 @@ Future additions
 - [ ] Phong with light warping
 - [ ] Cubemap
 - [ ] Glass
+- [ ] Vertex moving
+- [ ] Toon silhouette
