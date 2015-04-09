@@ -13,6 +13,7 @@
 #include "SimpleShading.h"
 #include "Phong.h"
 #include "NormalPhong.h"
+#include "ToonAA.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -23,7 +24,7 @@ void prepareSettings( App::Settings* settings );
 class MaterialLibraryApp : public App {
   public:
     enum PrimitiveDef  { SPHERE, CUBE, TEAPOT };
-    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG, NORMALPHONG };
+    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG, NORMALPHONG, TOONAA };
 
 	void setup() override;
 	void update() override;
@@ -69,7 +70,8 @@ void MaterialLibraryApp::setup()
         { WIREFRAME, new Wireframe() },
         { SIMPLE, new SimpleShading() },
         { PHONG, new Phong() },
-        { NORMALPHONG, new NormalPhong() }
+        { NORMALPHONG, new NormalPhong() },
+        { TOONAA, new ToonAA() }
     };
     loadMaterial();
     
@@ -92,7 +94,7 @@ void MaterialLibraryApp::setupParams()
 {
     bDrawParams = true;
     vector<string> primitives = { "Sphere", "Cube", "Teapot" };
-    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong", "Normal mapping" };
+    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong", "Normal mapping", "AA Toon" };
     
     mParams = ci::params::InterfaceGl::create( "Material Library", ci::ivec2(250, 100) );
     mParams->setOptions( "", "valueswidth=120 refresh=0.1" );

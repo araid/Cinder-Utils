@@ -31,6 +31,7 @@
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		03C778CAF4E04F3ABCCDDE0A /* MaterialLibrary_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = MaterialLibrary_Prefix.pch; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		202C29511AD5FFA800285FFF /* ToonAA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToonAA.h; path = ../src/materials/ToonAA.h; sourceTree = "<group>"; };
 		205FA9D51AC2064400E342B1 /* BaseMaterial.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BaseMaterial.h; path = ../src/materials/BaseMaterial.h; sourceTree = "<group>"; };
 		205FA9D71AC2089000E342B1 /* SimpleShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleShading.h; path = ../src/materials/SimpleShading.h; sourceTree = "<group>"; };
 		205FA9D81AC208DC00E342B1 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 				205FA9D71AC2089000E342B1 /* SimpleShading.h */,
 				205FA9D91AC2125D00E342B1 /* Phong.h */,
 				205FA9DB1AC22B4B00E342B1 /* NormalPhong.h */,
+				202C29511AD5FFA800285FFF /* ToonAA.h */,
 			);
 			name = Materials;
 			sourceTree = "<group>";
