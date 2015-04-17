@@ -38,6 +38,7 @@
 		205FA9D91AC2125D00E342B1 /* Phong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Phong.h; path = ../src/materials/Phong.h; sourceTree = "<group>"; };
 		205FA9DA1AC2125D00E342B1 /* Wireframe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Wireframe.h; path = ../src/materials/Wireframe.h; sourceTree = "<group>"; };
 		205FA9DB1AC22B4B00E342B1 /* NormalPhong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NormalPhong.h; path = ../src/materials/NormalPhong.h; sourceTree = "<group>"; };
+		206EAE3F1AE190EE00D3C2F3 /* Rim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rim.h; path = ../src/materials/Rim.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		404E544E742F46B680AF5D21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 				205FA9D91AC2125D00E342B1 /* Phong.h */,
 				205FA9DB1AC22B4B00E342B1 /* NormalPhong.h */,
 				202C29511AD5FFA800285FFF /* ToonAA.h */,
+				206EAE3F1AE190EE00D3C2F3 /* Rim.h */,
 			);
 			name = Materials;
 			sourceTree = "<group>";

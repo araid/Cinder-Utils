@@ -16,10 +16,8 @@ class ToonAA : public BaseMaterial {
 public:
     void setup()
     {
-        if (!bLoaded) {
-            loadShader("shaders/ToonAA");
-            bLoaded = true;
-        }
+        mShaderPath = "shaders/ToonAA";
+        BaseMaterial::setup();
     }
     
     virtual void setupParams(params::InterfaceGlRef &params)
@@ -51,7 +49,6 @@ public:
     }
     
 protected:
-    
     vec3 mLightLoc = vec3(-20, 20, 20);
     Color mDiffuseColor = Color(0, 0.75, 0.75);
     Color mAmbientColor = Color(0.04f, 0.04f, 0.04f);

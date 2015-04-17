@@ -16,10 +16,8 @@ class Phong : public BaseMaterial {
 public:
     void setup()
     {
-        if (!bLoaded) {
-            loadShader("shaders/Phong");
-            bLoaded = true;
-        }
+        mShaderPath = "shaders/Phong";
+        BaseMaterial::setup();
     }
     
     virtual void setupParams(params::InterfaceGlRef &params)

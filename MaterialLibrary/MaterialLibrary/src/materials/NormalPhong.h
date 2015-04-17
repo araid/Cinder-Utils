@@ -18,7 +18,8 @@ public:
     void setup()
     {
         if (!bLoaded) {
-            loadShader("shaders/NormalPhong");
+            mShaderPath = "shaders/NormalPhong";
+            loadShader();
             mShader->uniform("uDiffuseMap", 0);
             mShader->uniform("uNormalMap", 1);
             

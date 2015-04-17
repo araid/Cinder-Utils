@@ -14,6 +14,7 @@
 #include "Phong.h"
 #include "NormalPhong.h"
 #include "ToonAA.h"
+#include "Rim.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -24,7 +25,7 @@ void prepareSettings( App::Settings* settings );
 class MaterialLibraryApp : public App {
   public:
     enum PrimitiveDef  { SPHERE, CUBE, TEAPOT };
-    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG, NORMALPHONG, TOONAA };
+    enum MaterialDef   { WIREFRAME, SIMPLE, PHONG, NORMALPHONG, TOONAA, RIM };
 
 	void setup() override;
 	void update() override;
@@ -36,6 +37,7 @@ class MaterialLibraryApp : public App {
     void setupParams();
     void loadGeometry();
     void loadMaterial();
+    void reloadShader();
     
     bool bDrawParams;
     
@@ -60,9 +62,9 @@ void prepareSettings( App::Settings* settings )
 void MaterialLibraryApp::setup()
 {
     // setup geometry
-    mSubdivisions = 30;
+    mSubdivisions = 50;
     mPrimitiveSelected = mPrimitiveCurrent = SPHERE;
-    mMaterialSelected = mMaterialCurrent = SIMPLE;
+    mMaterialSelected = mMaterialCurrent = RIM;
     loadGeometry();
     
     // setup materials
@@ -71,7 +73,8 @@ void MaterialLibraryApp::setup()
         { SIMPLE, new SimpleShading() },
         { PHONG, new Phong() },
         { NORMALPHONG, new NormalPhong() },
-        { TOONAA, new ToonAA() }
+        { TOONAA, new ToonAA() },
+        { RIM, new Rim() }
     };
     loadMaterial();
     
@@ -94,7 +97,7 @@ void MaterialLibraryApp::setupParams()
 {
     bDrawParams = true;
     vector<string> primitives = { "Sphere", "Cube", "Teapot" };
-    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong", "Normal mapping", "AA Toon" };
+    vector<string> materials  = { "Wireframe", "Simple Shading", "Phong", "Normal mapping", "AA Toon", "Rim shading" };
     
     mParams = ci::params::InterfaceGl::create( "Material Library", ci::ivec2(250, 100) );
     mParams->setOptions( "", "valueswidth=120 refresh=0.1" );
@@ -104,6 +107,8 @@ void MaterialLibraryApp::setupParams()
     mParams->addParam( "Primitive", primitives, (int*) &mPrimitiveSelected );
     mParams->addParam( "Subdivisions", &mSubdivisions ).min(1).max(100).step(1)
             .updateFn( [this] { loadGeometry(); } );
+    
+    mParams->addButton("Reload Shader", std::bind(&MaterialLibraryApp::reloadShader, this));
 }
 
 void MaterialLibraryApp::loadGeometry()
@@ -120,6 +125,11 @@ void MaterialLibraryApp::loadMaterial()
     mMaterial = mMaterials.at((MaterialDef) mMaterialCurrent);
     mMaterial->setup();
     mMaterial->setupParams(mMaterialParams);
+}
+
+void MaterialLibraryApp::reloadShader()
+{
+    if(mMaterial) mMaterial->loadShader();
 }
 
 void MaterialLibraryApp::mouseDown( MouseEvent event )
@@ -139,6 +149,10 @@ void MaterialLibraryApp::keyDown(KeyEvent event )
             bDrawParams = !bDrawParams;
             mParams->show(bDrawParams);
             if(mMaterialParams) mMaterialParams->show(bDrawParams);
+            break;
+            
+        case KeyEvent::KEY_SPACE:
+            reloadShader();
             break;
             
         default:

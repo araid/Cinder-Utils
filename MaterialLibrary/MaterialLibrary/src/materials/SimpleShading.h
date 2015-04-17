@@ -16,10 +16,8 @@ class SimpleShading : public BaseMaterial {
 public:
     void setup()
     {
-        if (!bLoaded) {
-            loadShader("shaders/SimpleShading");
-            bLoaded = true;
-        }
+        mShaderPath = "shaders/SimpleShading";
+        BaseMaterial::setup();
     }
     
     void draw(gl::VboMeshRef mesh)
