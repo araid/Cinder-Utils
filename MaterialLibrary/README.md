@@ -10,7 +10,6 @@ The idea here is to have only self contained classes that perform single-pass sh
 Future additions
 - [ ] More toon shaders: x-toon, etc
 - [ ] Valve TF2
-- [ ] Rim/halo shading
 - [ ] Phong with light warping
 - [ ] Cubemap
 - [ ] Glass
