@@ -32,7 +32,7 @@ public:
         gl::ScopedGlslProg shader(mShader);
         
         // We're using alpha blending, so render the back side first.
-        gl::ScopedAlphaBlend blendScope( false );
+        gl::ScopedBlendAlpha blendScope;
         gl::ScopedFaceCulling cullScope( true, GL_FRONT );
         gl::ScopedColor colorScope( Color( 0.7f, 0.5f, 0.3f ) );
 
