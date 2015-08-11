@@ -1,7 +1,6 @@
 # Some general ignore patterns
 
 [Bb]uild/
-[Oo]bj/
 *.o
 [Dd]ebug*/
 [Rr]elease*/
